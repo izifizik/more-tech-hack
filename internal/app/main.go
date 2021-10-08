@@ -1,7 +1,7 @@
 package app
 
 import (
-	"more-tech-hack/internal/app/config"
+	"more-tech-hack/internal/config"
 	"more-tech-hack/internal/delivery/http"
 )
 

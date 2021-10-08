@@ -11,8 +11,5 @@ func Run() error {
 	gin.SetMode(gin.DebugMode)
 
 	err := app.Run(config.Port)
-	// if err != nil {
-	// 	log.Println("Internal server err")
-	// }
 	return err
 }
