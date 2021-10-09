@@ -4,15 +4,17 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
+	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
 
 func Auth(c *gin.Context) {
+	ctx := context.Background()
 
 	jsonInput := struct {
-		Username  string `json:"username"`
-		Password  string `json:"password"`
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}{}
 
 	if err := c.ShouldBindJSON(&jsonInput); err != nil {
@@ -22,21 +24,40 @@ func Auth(c *gin.Context) {
 		return
 	}
 
-	client := gocloak.NewClient(config.KeyHttpPath)
-	ctx := context.Background()
-
-	login, err := client.Login(ctx, config.KeyClisentId, config.KeySecret, "dima", jsonInput.Username, jsonInput.Password)
+	login, err := config.Client.Login(ctx, config.KeyClientId, config.KeySecret, config.KeyRealm, jsonInput.Username, jsonInput.Password)
 	if err != nil {
+		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message":       "Error with login: " + err.Error(),
+			"message": "Error with login: " + err.Error(),
 		})
 		return
 	}
+
+	params := gocloak.GetUsersParams{
+		Username: gocloak.StringP(jsonInput.Username),
+	}
+
+	user, err := config.Client.GetUsers(ctx, login.AccessToken, config.KeyRealm, params)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error with login: " + err.Error(),
+		})
+		return
+	}
+
+	if len(user) == 0 {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "User not found",
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"message": "OK",
-		"access_token": login.AccessToken,
+		"message":       "OK",
+		"access_token":  login.AccessToken,
 		"refresh_token": login.RefreshToken,
-		"exp_access": login.ExpiresIn,
-		"exp_refresh": login.RefreshExpiresIn,
+		"exp_access":    login.ExpiresIn,
+		"exp_refresh":   login.RefreshExpiresIn,
+		"user":          user,
 	})
 }

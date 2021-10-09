@@ -1,6 +1,8 @@
 package config
 
 import (
+	"context"
+	"github.com/Nerzal/gocloak/v9"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -13,9 +15,11 @@ var (
 	KeyHttpPath      string
 	KeyRealm         string
 	KeySecret        string
-	KeyClisentId     string
+	KeyClientId      string
 	CookieDataHub    string
 	DataHubUrl       string
+	Client           gocloak.GoCloak
+	AdminToken       *gocloak.JWT
 )
 
 func Load() {
@@ -32,7 +36,17 @@ func Load() {
 	KeyHttpPath = os.Getenv("KC_CLIENT_PATH")
 	KeyRealm = os.Getenv("KC_REALM")
 	KeySecret = os.Getenv("KC_SECRET")
-	KeyClisentId = os.Getenv("KC_CLIENT")
+	KeyClientId = os.Getenv("KC_CLIENT")
 	CookieDataHub = os.Getenv("COOKIE_DATAHUB")
 	DataHubUrl = os.Getenv("DATAHUB_URL")
+
+	client := gocloak.NewClient(KeyHttpPath)
+	ctx := context.Background()
+	token, err := client.LoginAdmin(ctx, KeyAdminUsername, KeyAdminPassword, KeyRealm)
+	if err != nil {
+		log.Println("Get keycloak error")
+	}
+
+	Client = client
+	AdminToken = token
 }
