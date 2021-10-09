@@ -45,19 +45,14 @@ func Auth(c *gin.Context) {
 		return
 	}
 
-	if len(user) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "user not found",
-		})
-		return
-	}
-
 	c.JSON(http.StatusOK, gin.H{
 		"message":       "ok",
-		"access_token":  login.AccessToken,
-		"refresh_token": login.RefreshToken,
-		"exp_access":    login.ExpiresIn,
-		"exp_refresh":   login.RefreshExpiresIn,
-		"user":          user[0],
+		"accessToken":   login.AccessToken,
+		"refreshToken":  login.RefreshToken,
+		"expAccess":     login.ExpiresIn,
+		"expRefresh":    login.RefreshExpiresIn,
+		"userFirstName": user[0].FirstName,
+		"userLastName":  user[0].LastName,
+		"userEmail":     user[0].Email,
 	})
 }

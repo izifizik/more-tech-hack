@@ -11,9 +11,9 @@ import (
 func Register(c *gin.Context) {
 	ctx := context.Background()
 	jsonInput := struct {
-		FirstName string `json:"first_name"`
-		LastName  string `json:"last_name"`
-		EMail     string `json:"e_mail"`
+		FirstName string `json:"userFirstName"`
+		LastName  string `json:"userLastName"`
+		EMail     string `json:"userEmail"`
 		Username  string `json:"username"`
 		Password  string `json:"password"`
 	}{}
@@ -59,9 +59,9 @@ func Register(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message":    "ok",
-		"first_name": jsonInput.FirstName,
-		"last_name":  jsonInput.LastName,
-		"email":      jsonInput.EMail,
+		"userFirstName": jsonInput.FirstName,
+		"userLastLame":  jsonInput.LastName,
+		"userEmail":      jsonInput.EMail,
 		"username":   jsonInput.Username,
 		"token":      login,
 	})
