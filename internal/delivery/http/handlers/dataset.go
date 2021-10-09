@@ -15,7 +15,7 @@ func GetDataset(c *gin.Context) {
 }
 
 func Browse(c *gin.Context) {
-	path := c.DefaultQuery("path", "")
+	path := c.Param("path")
 	resp := services.Browse(path)
 	c.JSON(http.StatusOK, gin.H{
 		"browse": resp.Browse,

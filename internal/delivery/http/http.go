@@ -17,7 +17,7 @@ func Run() error {
 
 	app.Use(middlewares.AuthMiddleware)
 	app.GET("/dataset", handlers.GetDataset)
-	app.GET("/browse", handlers.Browse)
+	app.GET("/browse/:path", handlers.Browse)
 
 	err := app.Run("0.0.0.0:" + config.Port)
 

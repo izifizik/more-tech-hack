@@ -6,13 +6,14 @@ import (
 	"github.com/machinebox/graphql"
 	"log"
 	"more-tech-hack/internal/config"
+	"strings"
 )
 
 var DataHub *graphql.Client
 
 func Init() {
 	// create a client (safe to share across requests)
-	DataHub = graphql.NewClient("http://datahub.yc.pbd.ai:9002/api/graphql")
+	DataHub = graphql.NewClient(config.DataHubUrl)
 }
 
 func GetDataset(urn string) DatasetResp {
@@ -124,11 +125,19 @@ func GetDataset(urn string) DatasetResp {
 
 func Browse(path string) BrowseResp {
 
+	array := strings.Split(path, ".")
 	fmt.Println(path)
+	var res = "["
+	for _, v := range array {
+		res += "\"" + v + "\","
+	}
+	res += "]"
+	fmt.Println(res)
+
 	// make a request
 	req := graphql.NewRequest(`
  {
-  browse(input: {type: DATASET, path: ` + path + `, start: 0, count: 10, filters: null}) {
+  browse(input: {type: DATASET, path: ` + res + `, start: 0, count: 10, filters: null}) {
     entities {
       urn
       type

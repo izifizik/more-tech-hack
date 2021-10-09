@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 	"log"
 	"os"
 	"strconv"
@@ -74,7 +75,7 @@ func ConnectDb() {
 	// open database
 	Db, err = sql.Open("postgres", psqlconnect)
 	if err != nil {
-		log.Println("Cannot open database")
+		log.Println("Cannot open database: ", err)
 		return
 	}
 
