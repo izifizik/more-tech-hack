@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"fmt"
 	"github.com/machinebox/graphql"
 	"log"
 	"more-tech-hack/internal/config"
@@ -108,8 +109,10 @@ func GetDataset() DatasetResp {
 `)
 
 	// set header fields
-	req.Header.Set("Cache-Control", "no-cache")
+	//req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Cookie", config.CookieDataHub)
+
+	fmt.Println(config.CookieDataHub)
 
 	// run it and capture the response
 	var respData DatasetResp
@@ -124,9 +127,8 @@ func Browse() BrowseResp {
 
 	// make a request
 	req := graphql.NewRequest(`
-  {
  {
-  browse(input: {type: DATASET, path: [], start: 0, count: 20, filters: null}) {
+  browse(input: {type: DATASET, path: [], start: 0, count: 10, filters: null}) {
     entities {
       urn
       type

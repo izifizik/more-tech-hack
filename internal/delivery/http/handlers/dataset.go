@@ -16,6 +16,6 @@ func GetDataset(c *gin.Context) {
 func Browse(c *gin.Context) {
 	resp := services.Browse()
 	c.JSON(http.StatusOK, gin.H{
-		"fields": resp.Browse.Groups,
+		"fields": resp,
 	})
 }

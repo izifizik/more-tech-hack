@@ -9,8 +9,6 @@ import (
 )
 
 func Register(c *gin.Context) {
-	config.LoadKC()
-
 	client := gocloak.NewClient(config.KeyHttpPath)
 	AdminToken, err := client.LoginAdmin("andrey", "andrey", "demo")
 	if err != nil {

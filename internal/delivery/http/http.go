@@ -13,6 +13,7 @@ func Run() error {
 
 	app.POST("/reg", handlers.Register)
 	app.GET("/dataset", handlers.GetDataset)
+	//app.GET("/browse/:path", handlers.Browse)
 	app.GET("/browse", handlers.Browse)
 
 	err := app.Run("0.0.0.0:" + config.Port)
