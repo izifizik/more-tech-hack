@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
+	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
@@ -25,7 +26,7 @@ func Auth(c *gin.Context) {
 
 	login, err := config.Client.Login(ctx, config.KeyClientId, config.KeySecret, config.KeyRealm, jsonInput.Username, jsonInput.Password)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
+		c.JSON(http.StatusUnauthorized, gin.H{
 			"message": "Error with login: " + err.Error(),
 		})
 		return
@@ -37,25 +38,26 @@ func Auth(c *gin.Context) {
 
 	user, err := config.Client.GetUsers(ctx, config.AdminToken.AccessToken, config.KeyRealm, params)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error with get client: " + err.Error(),
+		log.Println(err)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "user not found",
 		})
 		return
 	}
 
 	if len(user) == 0 {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "User not found",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "user not found",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":       "OK",
+		"message":       "ok",
 		"access_token":  login.AccessToken,
 		"refresh_token": login.RefreshToken,
 		"exp_access":    login.ExpiresIn,
 		"exp_refresh":   login.RefreshExpiresIn,
-		"user_access": user,
+		"user":          user[0],
 	})
 }
