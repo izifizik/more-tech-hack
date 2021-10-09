@@ -7,15 +7,17 @@ import (
 )
 
 func GetDataset(c *gin.Context) {
-	resp := services.GetDataset()
+	urn := c.DefaultQuery("urn", "urn:li:dataset:(urn:li:dataPlatform:hive,SampleHiveDataset,PROD)")
+	resp := services.GetDataset(urn)
 	c.JSON(http.StatusOK, gin.H{
-		"fields": resp.Dataset.SchemaMetadata.Fields,
+		"dataset": resp.Dataset,
 	})
 }
 
 func Browse(c *gin.Context) {
-	resp := services.Browse()
+	path := c.DefaultQuery("path", "")
+	resp := services.Browse(path)
 	c.JSON(http.StatusOK, gin.H{
-		"fields": resp,
+		"groups": resp.Browse,
 	})
 }

@@ -15,12 +15,13 @@ func Init() {
 	DataHub = graphql.NewClient("http://datahub.yc.pbd.ai:9002/api/graphql")
 }
 
-func GetDataset() DatasetResp {
+func GetDataset(urn string) DatasetResp {
 
+	fmt.Println(urn)
 	// make a request
 	req := graphql.NewRequest(`
   {
-  dataset(urn: "urn:li:dataset:(urn:li:dataPlatform:hive,fct_users_created,PROD)") {
+  dataset(urn: ` + urn + `) {
     urn
     type
     name
@@ -112,8 +113,6 @@ func GetDataset() DatasetResp {
 	//req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Cookie", config.CookieDataHub)
 
-	fmt.Println(config.CookieDataHub)
-
 	// run it and capture the response
 	var respData DatasetResp
 	if err := DataHub.Run(context.Background(), req, &respData); err != nil {
@@ -123,12 +122,13 @@ func GetDataset() DatasetResp {
 	return respData
 }
 
-func Browse() BrowseResp {
+func Browse(path string) BrowseResp {
 
+	fmt.Println(path)
 	// make a request
 	req := graphql.NewRequest(`
  {
-  browse(input: {type: DATASET, path: [], start: 0, count: 10, filters: null}) {
+  browse(input: {type: DATASET, path: ` + path + `, start: 0, count: 10, filters: null}) {
     entities {
       urn
       type
