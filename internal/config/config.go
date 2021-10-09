@@ -14,7 +14,7 @@ var (
 	KeyRealm         string
 	KeySecret        string
 	CookieDataHub    string
-	DataHubUrl    string
+	DataHubUrl       string
 )
 
 func Load() {
