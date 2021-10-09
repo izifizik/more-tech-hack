@@ -4,26 +4,12 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
-	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
 
 
 func Register(c *gin.Context) {
-	config.LoadKC()
-
-	client := gocloak.NewClient(config.KeyHttpPath)
-	ctx := context.Background()
-	token, err := client.LoginAdmin(ctx, "dima", "dimadima", "dima")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-
-			"message": "Error with get admin auth " + err.Error(),
-		})
-		return
-	}
-
 	jsonInput := struct {
 		FirstName string `json:"first_name"`
 		LastName  string `json:"last_name"`
@@ -32,6 +18,23 @@ func Register(c *gin.Context) {
 		Password  string `json:"password"`
 	}{}
 
+	if err := c.ShouldBindJSON(&jsonInput); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": "Error with pars json: " + err.Error(),
+		})
+		return
+	}
+
+	client := gocloak.NewClient(config.KeyHttpPath)
+	ctx := context.Background()
+	token, err := client.LoginAdmin(ctx, "dima", "dimadima", "dima")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error with get admin auth " + err.Error(),
+		})
+		return
+	}
+
 	user := gocloak.User{
 		FirstName: gocloak.StringP(jsonInput.FirstName),
 		LastName:  gocloak.StringP(jsonInput.LastName),
@@ -39,7 +42,7 @@ func Register(c *gin.Context) {
 		Enabled:   gocloak.BoolP(true),
 		Username:  gocloak.StringP(jsonInput.Username),
 	}
-	log.Println(token.AccessToken)
+
 	userID, err := client.CreateUser(ctx, token.AccessToken, "dima", user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -47,11 +50,7 @@ func Register(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message":       "Ok",
-		"user":          userID,
-	})
-	return
+
 	err = client.SetPassword(ctx, token.AccessToken, userID, "dima", jsonInput.Password, false)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -69,6 +68,9 @@ func Register(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
-		"login": login,
+		"access_token": login.AccessToken,
+		"refresh_token": login.RefreshToken,
+		"exp_access": login.ExpiresIn,
+		"exp_refresh": login.RefreshExpiresIn,
 	})
 }
