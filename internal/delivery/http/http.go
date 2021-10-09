@@ -12,6 +12,7 @@ func Run() error {
 	gin.SetMode(gin.DebugMode)
 
 	app.POST("/reg", handlers.Register)
+	app.GET("/dataset", handlers.GetDataset)
 
 	err := app.Run("0.0.0.0:" + config.Port)
 

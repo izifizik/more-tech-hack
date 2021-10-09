@@ -7,12 +7,14 @@ import (
 )
 
 var (
-	Port string // port without ':'
+	Port             string // port without ':'
 	KeyAdminUsername string
 	KeyAdminPassword string
-	KeyHttpPath string
-	KeyRealm string
-	KeySecret string
+	KeyHttpPath      string
+	KeyRealm         string
+	KeySecret        string
+	CookieDataHub    string
+	DataHubUrl    string
 )
 
 func Load() {
@@ -35,4 +37,6 @@ func LoadKC() {
 	KeyHttpPath = os.Getenv("KC_CLIENT_PATH")
 	KeyRealm = os.Getenv("KC_REALM")
 	KeySecret = os.Getenv("KC_SECRET")
+	CookieDataHub = os.Getenv("COOKIE_DATAHUB")
+	DataHubUrl = os.Getenv("DATAHUB_URL")
 }
