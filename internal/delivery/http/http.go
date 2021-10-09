@@ -15,6 +15,7 @@ func Run() error {
 	app.GET("/dataset", handlers.GetDataset)
 	//app.GET("/browse/:path", handlers.Browse)
 	app.GET("/browse", handlers.Browse)
+	app.POST("/auth", handlers.Auth)
 
 	err := app.Run("0.0.0.0:" + config.Port)
 
