@@ -40,13 +40,10 @@ func Load() {
 	CookieDataHub = os.Getenv("COOKIE_DATAHUB")
 	DataHubUrl = os.Getenv("DATAHUB_URL")
 
-	client := gocloak.NewClient(KeyHttpPath)
+	Client = gocloak.NewClient(KeyHttpPath)
 	ctx := context.Background()
-	token, err := client.LoginAdmin(ctx, KeyAdminUsername, KeyAdminPassword, KeyRealm)
+	AdminToken, err = Client.LoginAdmin(ctx, KeyAdminUsername, KeyAdminPassword, KeyRealm)
 	if err != nil {
 		log.Println("Get keycloak error")
 	}
-
-	Client = client
-	AdminToken = token
 }
