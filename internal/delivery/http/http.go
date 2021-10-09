@@ -13,11 +13,11 @@ func Run() error {
 	gin.SetMode(gin.DebugMode)
 
 	app.POST("/reg", handlers.Register)
+	app.POST("/auth", handlers.Auth)
 
 	app.Use(middlewares.AuthMiddleware)
 	app.GET("/dataset", handlers.GetDataset)
 	app.GET("/browse", handlers.Browse)
-	app.POST("/auth", handlers.Auth)
 
 	err := app.Run("0.0.0.0:" + config.Port)
 
