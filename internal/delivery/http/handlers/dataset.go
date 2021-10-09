@@ -12,3 +12,10 @@ func GetDataset(c *gin.Context) {
 		"fields": resp.Dataset.SchemaMetadata.Fields,
 	})
 }
+
+func Browse(c *gin.Context) {
+	resp := services.Browse()
+	c.JSON(http.StatusOK, gin.H{
+		"fields": resp.Browse.Groups,
+	})
+}

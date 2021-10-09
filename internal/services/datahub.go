@@ -120,6 +120,62 @@ func GetDataset() DatasetResp {
 	return respData
 }
 
+func Browse() BrowseResp {
+
+	// make a request
+	req := graphql.NewRequest(`
+  {
+ {
+  browse(input: {type: DATASET, path: [], start: 0, count: 20, filters: null}) {
+    entities {
+      urn
+      type
+    }
+    groups {
+      name
+      count
+    }
+    start
+    count
+    total
+    metadata {
+      path
+      totalNumEntities
+    }
+  }
+}
+`)
+
+	// set header fields
+	req.Header.Set("Cache-Control", "no-cache")
+	req.Header.Set("Cookie", config.CookieDataHub)
+
+	// run it and capture the response
+	var respData BrowseResp
+	if err := DataHub.Run(context.Background(), req, &respData); err != nil {
+		log.Println(err)
+	}
+
+	return respData
+}
+
+type BrowseResp struct {
+	Browse struct {
+		Entities []interface{} `json:"entities"`
+		Groups   []struct {
+			Name  string `json:"name"`
+			Count int    `json:"count"`
+		} `json:"groups"`
+		Start    int `json:"start"`
+		Count    int `json:"count"`
+		Total    int `json:"total"`
+		Metadata struct {
+			Path             []interface{} `json:"path"`
+			TotalNumEntities int           `json:"totalNumEntities"`
+		} `json:"metadata"`
+	} `json:"browse"`
+}
+
 type DatasetResp struct {
 	Dataset struct {
 		Urn        string      `json:"urn"`
