@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
-	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
@@ -26,7 +25,6 @@ func Auth(c *gin.Context) {
 
 	login, err := config.Client.Login(ctx, config.KeyClientId, config.KeySecret, config.KeyRealm, jsonInput.Username, jsonInput.Password)
 	if err != nil {
-		log.Println(err.Error())
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error with login: " + err.Error(),
 		})
@@ -37,10 +35,10 @@ func Auth(c *gin.Context) {
 		Username: gocloak.StringP(jsonInput.Username),
 	}
 
-	user, err := config.Client.GetUsers(ctx, login.AccessToken, config.KeyRealm, params)
+	user, err := config.Client.GetUsers(ctx, config.AdminToken.AccessToken, config.KeyRealm, params)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error with login: " + err.Error(),
+			"message": "Error with get client: " + err.Error(),
 		})
 		return
 	}
@@ -58,6 +56,6 @@ func Auth(c *gin.Context) {
 		"refresh_token": login.RefreshToken,
 		"exp_access":    login.ExpiresIn,
 		"exp_refresh":   login.RefreshExpiresIn,
-		"user":          user,
+		"user_access": user,
 	})
 }
