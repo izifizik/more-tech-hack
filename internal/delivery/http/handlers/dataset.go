@@ -18,6 +18,6 @@ func Browse(c *gin.Context) {
 	path := c.DefaultQuery("path", "")
 	resp := services.Browse(path)
 	c.JSON(http.StatusOK, gin.H{
-		"groups": resp.Browse,
+		"browse": resp.Browse,
 	})
 }
