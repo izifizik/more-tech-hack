@@ -13,8 +13,9 @@ var (
 	KeyHttpPath      string
 	KeyRealm         string
 	KeySecret        string
+	KeyClisentId     string
 	CookieDataHub    string
-	DataHubUrl    string
+	DataHubUrl       string
 )
 
 func Load() {
@@ -37,6 +38,7 @@ func LoadKC() {
 	KeyHttpPath = os.Getenv("KC_CLIENT_PATH")
 	KeyRealm = os.Getenv("KC_REALM")
 	KeySecret = os.Getenv("KC_SECRET")
+	KeyClisentId = os.Getenv("KC_CLIENT")
 	CookieDataHub = os.Getenv("COOKIE_DATAHUB")
 	DataHubUrl = os.Getenv("DATAHUB_URL")
 }
