@@ -3,6 +3,7 @@ package http
 import (
 	"more-tech-hack/internal/config"
 	"more-tech-hack/internal/delivery/http/handlers"
+	"more-tech-hack/internal/delivery/http/middlewares"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,6 +13,8 @@ func Run() error {
 	gin.SetMode(gin.DebugMode)
 
 	app.POST("/reg", handlers.Register)
+
+	app.Use(middlewares.AuthMiddleware)
 	app.GET("/dataset", handlers.GetDataset)
 	//app.GET("/browse/:path", handlers.Browse)
 	app.GET("/browse", handlers.Browse)

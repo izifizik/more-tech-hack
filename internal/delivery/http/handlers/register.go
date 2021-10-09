@@ -4,12 +4,14 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
+	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
 
 
 func Register(c *gin.Context) {
+	ctx := context.Background()
 	jsonInput := struct {
 		FirstName string `json:"first_name"`
 		LastName  string `json:"last_name"`
@@ -25,16 +27,6 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	client := gocloak.NewClient(config.KeyHttpPath)
-	ctx := context.Background()
-	token, err := client.LoginAdmin(ctx, "dima", "dimadima", "dima")
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "Error with get admin auth " + err.Error(),
-		})
-		return
-	}
-
 	user := gocloak.User{
 		FirstName: gocloak.StringP(jsonInput.FirstName),
 		LastName:  gocloak.StringP(jsonInput.LastName),
@@ -43,7 +35,7 @@ func Register(c *gin.Context) {
 		Username:  gocloak.StringP(jsonInput.Username),
 	}
 
-	userID, err := client.CreateUser(ctx, token.AccessToken, "dima", user)
+	userID, err := config.Client.CreateUser(ctx, config.AdminToken.AccessToken, "dima", user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message":       "Error with create user: " + err.Error(),
@@ -51,7 +43,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err = client.SetPassword(ctx, token.AccessToken, userID, "dima", jsonInput.Password, false)
+	err = config.Client.SetPassword(ctx, config.AdminToken.AccessToken, userID, config.KeyRealm, jsonInput.Password, false)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message":       "Error with set password: " + err.Error(),
@@ -59,18 +51,21 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	login, err := client.Login(ctx, config.KeyClisentId, config.KeySecret, "dima", jsonInput.Username, jsonInput.Password)
+	login, err := config.Client.Login(ctx, config.KeyClientId, config.KeySecret, config.KeyRealm, jsonInput.Username, jsonInput.Password)
+	log.Println(login)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message":       "Error with login: " + err.Error(),
 		})
 		return
 	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message": "OK",
-		"access_token": login.AccessToken,
-		"refresh_token": login.RefreshToken,
-		"exp_access": login.ExpiresIn,
-		"exp_refresh": login.RefreshExpiresIn,
+		"first_name": jsonInput.FirstName,
+		"last_name": jsonInput.LastName,
+		"email": jsonInput.EMail,
+		"username": jsonInput.Username,
+		"token": login,
 	})
 }
