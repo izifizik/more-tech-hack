@@ -12,6 +12,7 @@ var (
 	KeyAdminPassword string
 	KeyHttpPath string
 	KeyRealm string
+	KeySecret string
 )
 
 func Load() {
@@ -33,4 +34,5 @@ func LoadKC() {
 	KeyAdminPassword = os.Getenv("KC_ADMIN_PASSWORD")
 	KeyHttpPath = os.Getenv("KC_CLIENT_PATH")
 	KeyRealm = os.Getenv("KC_REALM")
+	KeySecret = os.Getenv("KC_SECRET")
 }

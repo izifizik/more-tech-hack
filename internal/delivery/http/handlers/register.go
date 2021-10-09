@@ -3,6 +3,7 @@ package handlers
 import (
 	"github.com/Nerzal/gocloak"
 	"github.com/gin-gonic/gin"
+	"log"
 	"more-tech-hack/internal/config"
 	"net/http"
 )
@@ -29,6 +30,7 @@ func Register(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"message": "not all parameters are specified",
 		})
+		return
 	}
 
 	user := gocloak.User{
@@ -39,13 +41,15 @@ func Register(c *gin.Context) {
 		Username: jsonInput.Username,
 	}
 
-	_, err = client.CreateUser(AdminToken.AccessToken, config.KeyRealm, user)
+	createUser, err := client.CreateUser(AdminToken.AccessToken, config.KeyRealm, user)
+	log.Println(createUser)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Ok",
-			"access_token": AdminToken.AccessToken,
+			"access_token": "",
 			"refresh_token": AdminToken.RefreshToken,
 			"exp": AdminToken.ExpiresIn,
 		})
 	}
+
 }
