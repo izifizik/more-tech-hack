@@ -12,11 +12,12 @@ func Register(c *gin.Context) {
 	config.LoadKC()
 
 	client := gocloak.NewClient(config.KeyHttpPath)
-	AdminToken, err := client.LoginAdmin(config.KeyAdminUsername, config.KeyAdminPassword, config.KeyRealm)
+	AdminToken, err := client.LoginAdmin("andrey", "andrey", "demo")
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error with get admin auth " + err.Error(),
 		})
+		return
 	}
 
 	jsonInput := struct {
@@ -33,15 +34,15 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	user := gocloak.User{
-		FirstName: jsonInput.FirstName,
-		LastName: jsonInput.LastName,
-		Email: jsonInput.EMail,
-		Enabled: true,
-		Username: jsonInput.Username,
-	}
-
-	createUser, err := client.CreateUser(AdminToken.AccessToken, config.KeyRealm, user)
+	//user := gocloak.User{
+	//	FirstName: jsonInput.FirstName,
+	//	LastName: jsonInput.LastName,
+	//	Email: jsonInput.EMail,
+	//	Enabled: true,
+	//	Username: jsonInput.Username,
+	//}
+	log.Println(AdminToken.AccessToken)
+	createUser, err := client.CreateUser(AdminToken.AccessToken, "demo", gocloak.User{})
 	log.Println(createUser)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
