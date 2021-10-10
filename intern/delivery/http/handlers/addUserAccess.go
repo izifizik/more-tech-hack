@@ -20,7 +20,10 @@ func AddUserAccess(c *gin.Context) {
 		return
 	}
 
+	value, _ := c.Get("userId")
+	repository.UpdateBalance(value.(string))
 	err = repository.InsertUserAccess(jsonInput.UserId, jsonInput.ModelId)
+	b := repository.UpdateBalance(value.(string))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Internal Server Error",
@@ -29,5 +32,6 @@ func AddUserAccess(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+		"balance": b,
 	})
 }

@@ -15,10 +15,13 @@ func CreateModel(c *gin.Context) {
 		log.Println(err)
 	}
 	err = repository.InsertModel(&m)
+	value, _ := c.Get("userId")
+	b := repository.UpdateBalance(value.(string))
 	if err != nil {
 		log.Println(err)
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"message": "ok",
+		"balance": b,
 	})
 }
