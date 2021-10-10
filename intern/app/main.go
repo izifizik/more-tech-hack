@@ -1,9 +1,9 @@
 package app
 
 import (
-	"more-tech-hack/internal/config"
-	"more-tech-hack/internal/delivery/http"
-	"more-tech-hack/internal/services"
+	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/delivery/http"
+	"more-tech-hack/intern/services"
 )
 
 func Run() error {

@@ -3,8 +3,8 @@ package repository
 import (
 	"encoding/json"
 	_ "github.com/lib/pq"
-	"more-tech-hack/internal/config"
-	"more-tech-hack/internal/model"
+	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/model"
 )
 
 func InsertUser(userId string) error {

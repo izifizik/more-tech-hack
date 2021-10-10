@@ -2,8 +2,8 @@ package repository
 
 import (
 	"encoding/json"
-	"more-tech-hack/internal/config"
-	"more-tech-hack/internal/model"
+	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/model"
 )
 
 func GetModels(userId string) ([]model.ModelsGet, error) {

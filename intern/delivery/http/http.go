@@ -3,9 +3,9 @@ package http
 import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"more-tech-hack/internal/config"
-	"more-tech-hack/internal/delivery/http/handlers"
-	"more-tech-hack/internal/delivery/http/middlewares"
+	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/delivery/http/handlers"
+	"more-tech-hack/intern/delivery/http/middlewares"
 )
 
 func Run() error {

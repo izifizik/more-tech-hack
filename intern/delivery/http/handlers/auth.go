@@ -5,7 +5,7 @@ import (
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
 	"log"
-	"more-tech-hack/internal/config"
+	"more-tech-hack/intern/config"
 	"net/http"
 )
 

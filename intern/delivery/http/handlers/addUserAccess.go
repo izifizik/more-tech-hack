@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/gin-gonic/gin"
-	"more-tech-hack/internal/repository"
+	"more-tech-hack/intern/repository"
 	"net/http"
 )
 

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
-	"more-tech-hack/internal/repository"
+	"more-tech-hack/intern/repository"
 	"net/http"
 	"strconv"
 )

@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/machinebox/graphql"
 	"log"
-	"more-tech-hack/internal/config"
+	"more-tech-hack/intern/config"
 	"strings"
 )
 

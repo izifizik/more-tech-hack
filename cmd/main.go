@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"more-tech-hack/internal/app"
+	"more-tech-hack/intern/app"
 )
 
 func main() {

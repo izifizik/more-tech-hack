@@ -4,8 +4,8 @@ import (
 	"context"
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
-	"more-tech-hack/internal/config"
-	"more-tech-hack/internal/repository"
+	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/repository"
 	"net/http"
 )
 
