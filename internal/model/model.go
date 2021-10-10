@@ -1,6 +1,7 @@
 package model
 
 type Model struct {
+	Id int
 	Urn       string
 	Struct    Json
 	Name      string
@@ -9,3 +10,9 @@ type Model struct {
 
 type Json map[string]interface{}
 
+type ModelsGet struct {
+	ModelId        int
+	ModelName      string
+	ModelUrn       string
+	ModelIsDataset bool
+}

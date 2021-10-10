@@ -30,3 +30,12 @@ func InsertModel(model *model.Model) error {
 	}
 	return nil
 }
+
+func InsertUserAccess(userId string, modelId int) error {
+	insertSmth := `insert into user_access(user_id, model_id) values($1, $2)`
+	_, err := config.Db.Exec(insertSmth, userId, modelId)
+	if err != nil {
+		return err
+	}
+	return nil
+}
