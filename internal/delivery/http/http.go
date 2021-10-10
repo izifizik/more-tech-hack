@@ -27,6 +27,8 @@ func Run() error {
 	app.GET("/browse", handlers.Browse)
 	app.GET("/model/:id", handlers.GetModel)
 	app.GET("/models", handlers.GetModels)
+	app.GET("/users/:modelId", handlers.GetUsers)
+	app.POST("/add-user", handlers.AddUserAccess)
 
 	err := app.Run("0.0.0.0:" + config.Port)
 

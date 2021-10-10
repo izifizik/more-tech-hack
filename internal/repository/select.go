@@ -72,3 +72,22 @@ func GetModel(id int) (m model.Model, err error) {
 
 	return
 }
+
+func GetUsersByModelId(modelId int) (users []string, err error) {
+	rows, err := config.Db.Query(`select user_id from user_access where model_id=$1`, modelId)
+	if err != nil {
+		return
+	}
+
+	var userID string
+
+	for rows.Next() {
+		err = rows.Scan(&userID)
+		if err != nil {
+			return
+		}
+
+		users = append(users, userID)
+	}
+	return
+}
