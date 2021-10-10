@@ -25,7 +25,7 @@ func Run() error {
 	app.GET("/dataset", handlers.GetDataset)
 	app.GET("/browse/:path", handlers.Browse)
 	app.GET("/browse", handlers.Browse)
-	app.GET("/model/:id", handlers.GetModel)
+	app.GET("/models/:id", handlers.GetModel)
 	app.GET("/models", handlers.GetModels)
 	app.GET("/users/:modelId", handlers.GetUsers)
 	app.POST("/add-user", handlers.AddUserAccess)
