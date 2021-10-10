@@ -1,11 +1,10 @@
 package http
 
 import (
+	"github.com/gin-gonic/gin"
 	"more-tech-hack/internal/config"
 	"more-tech-hack/internal/delivery/http/handlers"
 	"more-tech-hack/internal/delivery/http/middlewares"
-
-	"github.com/gin-gonic/gin"
 )
 
 func Run() error {
