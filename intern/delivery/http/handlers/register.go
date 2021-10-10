@@ -67,11 +67,12 @@ func Register(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"message":    "ok",
+		"message":       "ok",
 		"userFirstName": jsonInput.FirstName,
 		"userLastLame":  jsonInput.LastName,
-		"userEmail":      jsonInput.EMail,
-		"username":   jsonInput.Username,
-		"token":      login,
+		"userEmail":     jsonInput.EMail,
+		"username":      jsonInput.Username,
+		"token":         login,
+		"balance":       0,
 	})
 }

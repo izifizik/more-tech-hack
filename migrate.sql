@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS models
 
 CREATE TABLE IF NOT EXISTS users
 (
-    id serial primary key
+    id      serial primary key,
+    balance float default 0.00
 );
 
 CREATE TABLE IF NOT EXISTS user_access

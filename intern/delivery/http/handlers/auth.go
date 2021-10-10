@@ -54,5 +54,6 @@ func Auth(c *gin.Context) {
 		"userFirstName": user[0].FirstName,
 		"userLastName":  user[0].LastName,
 		"userEmail":     user[0].Email,
+		"balance":       0,
 	})
 }
