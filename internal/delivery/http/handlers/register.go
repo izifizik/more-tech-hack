@@ -5,6 +5,7 @@ import (
 	"github.com/Nerzal/gocloak/v9"
 	"github.com/gin-gonic/gin"
 	"more-tech-hack/internal/config"
+	"more-tech-hack/internal/repository"
 	"net/http"
 )
 
@@ -37,6 +38,14 @@ func Register(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error with create user: " + err.Error(),
+		})
+		return
+	}
+
+	err = repository.InsertUser(jsonInput.Username)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"message": "Error with database insert: " + err.Error(),
 		})
 		return
 	}
