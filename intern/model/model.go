@@ -16,3 +16,8 @@ type ModelsGet struct {
 	ModelUrn       string `json:"urn"`
 	ModelIsDataset bool   `json:"isDataset"`
 }
+
+type User struct {
+	UserId  string     `json:"id"`
+	Balance float64 `json:"balance"`
+}

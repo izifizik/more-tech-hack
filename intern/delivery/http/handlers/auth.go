@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"log"
 	"more-tech-hack/intern/config"
+	"more-tech-hack/intern/repository"
 	"net/http"
 )
 
@@ -45,6 +46,11 @@ func Auth(c *gin.Context) {
 		return
 	}
 
+	m, err := repository.GetUser(*user[0].ID)
+	if err != nil {
+		log.Println()
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"message":       "ok",
 		"accessToken":   login.AccessToken,
@@ -54,6 +60,7 @@ func Auth(c *gin.Context) {
 		"userFirstName": user[0].FirstName,
 		"userLastName":  user[0].LastName,
 		"userEmail":     user[0].Email,
-		"balance":       0,
+		"balance":       m.Balance,
+		"userId":        m.UserId,
 	})
 }

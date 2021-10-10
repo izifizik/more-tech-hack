@@ -91,3 +91,23 @@ func GetUsersByModelId(modelId int) (users []string, err error) {
 	}
 	return
 }
+
+func GetUser(userId string) (m model.User, err error) {
+	rows, err := config.Db.Query(`select id,balance from users where id=$1`, userId)
+	if err != nil {
+		return
+	}
+
+	var userID string
+	var balance float64
+
+	for rows.Next() {
+		err = rows.Scan(&userID, &balance)
+		if err != nil {
+			return
+		}
+		m.Balance = balance
+		m.UserId = userID
+	}
+	return
+}
