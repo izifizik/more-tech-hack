@@ -6,6 +6,7 @@ require (
 	github.com/Nerzal/gocloak/v9 v9.0.3
 	github.com/gin-gonic/gin v1.7.4
 	github.com/joho/godotenv v1.4.0
+	github.com/lib/pq v1.10.3
 	github.com/machinebox/graphql v0.2.2
 )
 

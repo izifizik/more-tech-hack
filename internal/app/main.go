@@ -8,6 +8,7 @@ import (
 
 func Run() error {
 	config.Load()
+	config.ConnectDb()
 	services.Init()
 	err := http.Run()
 	if err != nil {
