@@ -29,3 +29,8 @@ HOST_DB=""
 ## Запуск проекта
 
 `go run cmd/main.go`
+
+
+## фронтенд
+
+https://github.com/alyush1n/more-tech-frontend
