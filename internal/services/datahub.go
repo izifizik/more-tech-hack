@@ -2,7 +2,6 @@ package services
 
 import (
 	"context"
-	"fmt"
 	"github.com/machinebox/graphql"
 	"log"
 	"more-tech-hack/internal/config"
@@ -18,28 +17,13 @@ func Init() {
 
 func GetDataset(urn string) DatasetResp {
 
-	fmt.Println(urn)
 	// make a request
 	req := graphql.NewRequest(`
   {
-  dataset(urn: ` + urn + `) {
+  dataset(urn: "` + urn + `") {
     urn
     type
     name
-    status {
-      removed
-    }
-    properties {
-      description
-      origin
-      customProperties {
-        key
-        value
-      }
-    }
-    editableProperties {
-      description
-    }
     datasetProfiles {
       rowCount
       columnCount
@@ -125,14 +109,19 @@ func GetDataset(urn string) DatasetResp {
 
 func Browse(path string) BrowseResp {
 
-	array := strings.Split(path, ".")
-	fmt.Println(path)
-	var res = "["
-	for _, v := range array {
-		res += "\"" + v + "\","
+	var res string
+	var array []string
+	if path != "" {
+		array = strings.Split(path, ".")
+		res = "["
+		for _, v := range array {
+			res += "\"" + v + "\","
+		}
+		res = res[:len(res)-1]
+		res += "]"
+	} else {
+		res = "[]"
 	}
-	res += "]"
-	fmt.Println(res)
 
 	// make a request
 	req := graphql.NewRequest(`
@@ -167,13 +156,31 @@ func Browse(path string) BrowseResp {
 		log.Println(err)
 	}
 
+	for i, v := range respData.Browse.Entities {
+		if v.Urn != "" {
+			name := strings.ReplaceAll(v.Urn, ",", ":")
+			name = strings.ReplaceAll(name, "(", ":")
+			name = strings.ReplaceAll(name, ")", ":")
+			a := strings.Split(name, ":")
+			for i2, v := range a {
+				if v == array[len(array)-1] {
+					respData.Browse.Entities[i].Name = a[i2+1]
+				}
+			}
+		}
+	}
+
 	return respData
 }
 
 type BrowseResp struct {
 	Browse struct {
-		Entities []interface{} `json:"entities"`
-		Groups   []struct {
+		Entities []struct {
+			Urn  string `json:"urn"`
+			Type string `json:"type"`
+			Name string `json:"name"`
+		} `json:"entities"`
+		Groups []struct {
 			Name  string `json:"name"`
 			Count int    `json:"count"`
 		} `json:"groups"`
