@@ -34,7 +34,7 @@ func Register(c *gin.Context) {
 		Username:  gocloak.StringP(jsonInput.Username),
 	}
 
-	userID, err := config.Client.CreateUser(ctx, config.AdminToken.AccessToken, "dima", user)
+	userID, err := config.Client.CreateUser(ctx, config.AdminToken.AccessToken, config.KeyRealm, user)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error with create user: " + err.Error(),
@@ -42,7 +42,7 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	err = repository.InsertUser(jsonInput.Username)
+	err = repository.InsertUser(userID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"message": "Error with database insert: " + err.Error(),

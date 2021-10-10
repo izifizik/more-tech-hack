@@ -9,7 +9,7 @@ import (
 )
 
 func AuthMiddleware(c *gin.Context) {
-	_, _, err := config.Client.DecodeAccessToken(context.Background(), c.GetHeader("Authorization"), config.KeyRealm,"")
+	_, claims, err := config.Client.DecodeAccessToken(context.Background(), c.GetHeader("Authorization"), config.KeyRealm, "")
 	if err != nil {
 		log.Println(err)
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
@@ -17,5 +17,7 @@ func AuthMiddleware(c *gin.Context) {
 		})
 		return
 	}
+	a := *claims
+	c.Set("userId", a["sub"])
 	c.Next()
 }

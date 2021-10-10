@@ -1,18 +1,18 @@
 package model
 
 type Model struct {
-	Id int
-	Urn       string
-	Struct    Json
-	Name      string
-	IsDataset bool
+	Id        int    `json:"id"`
+	Urn       string `json:"urn"`
+	Struct    Json   `json:"struct"`
+	Name      string `json:"name"`
+	IsDataset bool   `json:"isDataset"`
 }
 
 type Json map[string]interface{}
 
 type ModelsGet struct {
-	ModelId        int
-	ModelName      string
-	ModelUrn       string
-	ModelIsDataset bool
+	ModelId        int    `json:"id"`
+	ModelName      string `json:"name"`
+	ModelUrn       string `json:"urn"`
+	ModelIsDataset bool   `json:"isDataset"`
 }
